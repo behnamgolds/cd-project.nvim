@@ -12,7 +12,7 @@
 local default_config = {
 	-- this json file is acting like a database to update and read the projects in real time.
 	-- So because it's just a json file, you can edit directly to add more paths you want manually
-	projects_config_filepath = vim.fs.normalize(vim.fn.stdpath("config") .. "/cd-project.nvim.json"),
+	projects_config_filepath = "",
 	-- this controls the behaviour of `CdProjectAdd` command about how to get the project directory
 	project_dir_pattern = { ".git", ".gitignore", "Cargo.toml", "package.json", "go.mod" },
 	choice_format = "both", -- optional, you can switch to "name" or "path"
@@ -47,6 +47,9 @@ vim.g.cd_project_config = default_config
 
 ---@param user_config? CdProject.Config
 M.setup = function(user_config)
+	local projects_config_path = vim.fs.normalize(vim.fn.stdpath("data") .. "/cd-project.nvim")
+	vim.fn.mkdir(projects_config_path, "p")
+	default_config.projects_config_filepath = projects_config_path .. "/cd-project.nvim.json"
 	local previous_config = vim.g.cd_project_config or default_config
 	vim.g.cd_project_config = vim.tbl_deep_extend("force", previous_config, user_config or {}) or default_config
 	if vim.g.cd_project_config.auto_register_project then
