@@ -47,6 +47,7 @@ vim.g.cd_project_config = default_config
 
 ---@param user_config? CdProject.Config
 M.setup = function(user_config)
+	local projects_config_path = vim.fs.normalize(vim.fn.stdpath("data") .. "/cd-project.nvim")
 	default_config.projects_config_filepath = projects_config_path .. "/cd-project.nvim.json"
 	local previous_config = vim.g.cd_project_config or default_config
 	vim.g.cd_project_config = vim.tbl_deep_extend("force", previous_config, user_config or {}) or default_config
