@@ -47,11 +47,9 @@ vim.g.cd_project_config = default_config
 
 ---@param user_config? CdProject.Config
 M.setup = function(user_config)
-	local projects_config_path = vim.fs.normalize(vim.fn.stdpath("data") .. "/cd-project.nvim")
-	default_config.projects_config_filepath = projects_config_path .. "/cd-project.nvim.json"
 	local previous_config = vim.g.cd_project_config or default_config
 	vim.g.cd_project_config = vim.tbl_deep_extend("force", previous_config, user_config or {}) or default_config
-	vim.fn.mkdir(vim.g.cd_project_config.projects_config_path, "p")
+	vim.fn.mkdir(vim.fs.dirname(vim.g.cd_project_config.projects_config_filepath), "p")
 	if vim.g.cd_project_config.auto_register_project then
 		require("cd-project.auto").setup()
 	else
